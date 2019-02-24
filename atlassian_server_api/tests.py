@@ -1,17 +1,16 @@
-from django.test import TestCase
+import unittest
 import shutil
 import os
-from AtlassianAPI.bitbucket import BitBucket
-from AtlassianAPI.jira import Jira
-from AtlassianAPI.git import Git
+from atlassian_server_api.bitbucket import BitBucket
+from atlassian_server_api.jira import Jira
+from atlassian_server_api.git import Git
 from unittest.mock import MagicMock, patch
-from AtlassianIntegration.settings import ATLASSIAN_SETTINGS
 
 
-class AtlassianGitTests(TestCase):
+class AtlassianGitTests(unittest):
 
     cwd = os.getcwd()
-    test_dir = os.path.join(cwd, 'AtlassianAPI', 'test', 'git_test')
+    test_dir = os.path.join(cwd, 'atlassian_server_api', 'test', 'git_test')
 
     def git_test(self):
 
@@ -25,7 +24,8 @@ class AtlassianGitTests(TestCase):
         repo = Git(self.test_dir)
         r = repo.git_init()
         self.assertIs(r.decode('utf-8').startswith('Initialized empty Git repository'), True)
-        shutil.copyfile(os.path.join(self.cwd, 'AtlassianAPI', 'test', 'git', '.gitignore'), os.path.join(self.test_dir, '.gitignore'))
+        shutil.copyfile(os.path.join(self.cwd, 'atlassian_server_api', 'test', 'git', '.gitignore'),
+                        os.path.join(self.test_dir, '.gitignore'))
         repo.git_add_all()
         r = repo.git_status()
         self.assertIs(r.decode('utf-8').startswith(
